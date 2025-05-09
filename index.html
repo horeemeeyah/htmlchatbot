@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Chat Header -->
+    <div class="chat-header">
+      AI Chatbot
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+      <!-- Chat Body -->
+      <div class="chat-body">
+        <div class="message bot-message">
+          <div class="message-text">
+            hi sigma <br />
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Footer -->
+      <div class="chat-footer">
+        <form action="#" class="chat-form">
+          <textarea placeholder="Type your message..." class="message-input" required></textarea>
+          <div class="chat-controls">
+            <div class="file-upload-wrapper">
+              <input type="file" id="file-input" accept=".docx,.pdf,.png,.jpg,.webp,.txt" />
+              <label for="file-input" class="material-symbols-rounded">attach_file</label>
+            </div>
+            <button type="submit" id="send-message" class="material-symbols-rounded">send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
