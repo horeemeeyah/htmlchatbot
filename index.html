@@ -3,19 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Chatbot</title>
+    <title>IXL</title>
+    <link rel="icon" href="https://www.ixl.com/favicon.ico" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background-color: #1e1e1e;
+      }
+      .hero__btn-holder {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1000;
+      }
+      .hero__btn {
+        padding: 10px 15px;
+        background-color: #4b4b4b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+    </style>
   </head>
   <body>
-    <!-- Chat Header -->
-    <div class="chat-header">
-      AI Chatbot
+    <div class="hero__btn-holder">
+      <button class="hero__btn" onclick="blank();">about:blank</button>
     </div>
-
-    <!-- Chat Container -->
+    <div class="chat-header">
+      liam's ai
+    </div>
     <div class="chat-container">
-      <!-- Chat Body -->
       <div class="chat-body">
         <div class="message bot-message">
           <div class="message-text">
@@ -23,8 +44,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Chat Footer -->
       <div class="chat-footer">
         <form action="#" class="chat-form">
           <textarea placeholder="Type your message..." class="message-input" required></textarea>

@@ -5,7 +5,6 @@ const fileInput = document.querySelector("#file-input");
 const fileUploadWrapper = document.querySelector("#file-upload-wrapper");
 const fileCancelButton = document.querySelector("#file-cancel");
 
-// API setup
 const API_KEY = "AIzaSyALrt7xajZDZQYmDCAdXKK2YYMjOAU24jY";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
@@ -20,7 +19,6 @@ const userData = {
 const chatHistory = [];
 const initialInputHeight = messageInput.scrollHeight;
 
-// Create message element with dynamic classes and return it
 const createMessageElement = (content, ...classes) => {
   const div = document.createElement("div");
   div.classList.add("message", ...classes);
@@ -28,11 +26,9 @@ const createMessageElement = (content, ...classes) => {
   return div;
 };
 
-// Generate bot response using API
 const generateBotResponse = async (incomingMessageDiv) => {
   const messageElement = incomingMessageDiv.querySelector(".message-text");
 
-  // Add user message to chat history
   chatHistory.push({
     role: "user",
     parts: [
@@ -41,7 +37,6 @@ const generateBotResponse = async (incomingMessageDiv) => {
     ],
   });
 
-  // API request options
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -51,18 +46,15 @@ const generateBotResponse = async (incomingMessageDiv) => {
   };
 
   try {
-    // Fetch bot response from API
     const response = await fetch(API_URL, requestOptions);
     const data = await response.json();
     if (!response.ok) throw new Error(data.error.message);
 
-    // Extract and display the bot response
     const apiResponseText = data.candidates[0].content.parts[0].text
       .replace(/\*\*(.*?)\*\*/g, "$1")
       .trim();
     messageElement.innerText = apiResponseText;
 
-    // Add bot response to chat history
     chatHistory.push({
       role: "model",
       parts: [
@@ -79,14 +71,12 @@ const generateBotResponse = async (incomingMessageDiv) => {
   }
 };
 
-// Handle outgoing user messages
 const handleOutgoingMessage = (e) => {
   e.preventDefault();
   userData.message = messageInput.value.trim();
   messageInput.value = "";
   messageInput.dispatchEvent(new Event("input"));
 
-  // Create and display user message
   const messageContent = `<div class="message-text"></div>
                           ${
                             userData.file.data
@@ -102,7 +92,6 @@ const handleOutgoingMessage = (e) => {
   chatBody.appendChild(outgoingMessageDiv);
   chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
 
-  // Simulate bot response with thinking indicator after a delay
   setTimeout(() => {
     const messageContent = `<svg 
             class="bot-avatar"
@@ -133,7 +122,6 @@ const handleOutgoingMessage = (e) => {
   }, 600);
 };
 
-// Handle Enter key press for sending messages
 messageInput.addEventListener("keydown", (e) => {
   const userMessage = e.target.value.trim();
   if (e.key === "Enter" && userMessage && !e.shiftKey && window.innerWidth > 768) {
@@ -141,14 +129,12 @@ messageInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Auto resize message input
 messageInput.addEventListener("input", (e) => {
   messageInput.style.height = `${initialInputHeight}px`;
   messageInput.style.height = `${messageInput.scrollHeight}px`;
   document.querySelector("chat-form").style.borderRadius = messageInput.scrollHeight > initialInputHeight ? "15px" : "32px";
 });
 
-// Handle file input change
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
@@ -157,23 +143,20 @@ fileInput.addEventListener("change", () => {
   reader.onload = (e) => {
     const base64String = e.target.result;
 
-    // Store file data in userData
     userData.file = {
       data: base64String.split(",")[1],
       mime_type: file.type,
     };
 
-    // Display the uploaded file as an image in the chat
     const fileUploadedDiv = createMessageElement(
-      `<div class="message-text">📎 File uploaded:</div>
-       <img src="${base64String}" alt="Uploaded File" class="uploaded-image" />`,
+      `<div class="message-text">file attached:</div>
+       <img src="${base64String}" alt="uploaded file" class="uploaded-image" />`,
       "user-message",
       "file-uploaded"
     );
     chatBody.appendChild(fileUploadedDiv);
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
 
-    // Reset file input
     fileInput.value = "";
   };
 
@@ -184,3 +167,44 @@ sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
 document
   .querySelector("#file-upload")
   .addEventListener("click", () => fileInput.click());
+document.querySelector("#redirect-button").addEventListener("click", blank);
+
+function blank() {
+  const newWindow = window.open("about:blank", "_blank");
+  if (newWindow) {
+    const styles = Array.from(document.querySelectorAll("link[rel='stylesheet']"))
+      .map((link) => `<link rel="stylesheet" href="${link.href}">`)
+      .join("\n");
+
+    const inlineScripts = Array.from(document.querySelectorAll("script:not([src])"))
+      .map((script) => `<script>${script.innerHTML}</script>`)
+      .join("\n");
+
+    const externalScripts = Array.from(document.querySelectorAll("script[src]"))
+      .map((script) => `<script src="${script.src}"></script>`)
+      .join("\n");
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IXL</title>
+        <link rel="icon" href="https://www.ixl.com/favicon.ico"/>
+        ${styles}
+      </head>
+      <body>
+        ${document.body.innerHTML}
+        ${inlineScripts}
+        ${externalScripts}
+      </body>
+      </html>
+    `;
+    newWindow.document.open();
+    newWindow.document.write(htmlContent);
+    newWindow.document.close();
+  } else {
+    alert("allow popups plz");
+  }
+}
